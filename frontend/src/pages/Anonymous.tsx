@@ -1,0 +1,7 @@
+
+export function AnonymousPage() {
+    return (
+        <>
+        </>
+    )
+}

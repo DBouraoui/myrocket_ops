@@ -28,7 +28,7 @@ export function RegisterForm() {
 
   return (
     <div>
-      <h2>Register User</h2>
+      <h2 className="text-red-500">Register User</h2>
       <form onSubmit={handleRegister}>
         <input
           type="email"
