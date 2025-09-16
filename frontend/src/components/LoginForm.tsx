@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { authJwtLoginAuthJwtLoginPost, type BodyAuthJwtLoginAuthJwtLoginPost } from "../api/generated";
 import {ArrowRight, Eye, EyeOff, Rocket} from "lucide-react";
+import {Button} from "@/components/ui/button.tsx";
 
 export function LoginForm() {
     const [username, setUsername] = useState("");
@@ -91,12 +92,12 @@ export function LoginForm() {
                                     />
                                     <span className="ml-2 text-sm text-gray-600">Se souvenir de moi</span>
                                 </label>
-                                <button
+                                <Button
                                     type="button"
                                     className="text-sm text-gray-900 hover:underline"
                                 >
                                     Mot de passe oublié ?
-                                </button>
+                                </Button>
                             </div>
 
                             <button
