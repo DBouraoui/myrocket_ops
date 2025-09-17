@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { authJwtLoginAuthJwtLoginPost } from "../api/auth/auth.ts";
@@ -12,19 +10,19 @@ export function LoginForm() {
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    let naviate = useNavigate();
+    const navigate = useNavigate();
 
     const loginMutation = useMutation({
         mutationFn: (payload: BodyAuthJwtLoginAuthJwtLoginPost) =>
             authJwtLoginAuthJwtLoginPost(payload),
         onSuccess: (res) => {
-            // @ts-ignore
             localStorage.setItem("access_token", res.data.access_token);
             setIsLoading(false);
-            naviate("/dashboard");
+            navigate("/dashboard");
         },
-        onError: (err: any) => {
-            console.error(err.response?.data || "Login error");
+        onError: (err: Error) => {
+            console.error(err || "Login error");
+            setIsLoading(false);
         },
     });
 
@@ -129,7 +127,7 @@ export function LoginForm() {
 
                         {loginMutation.isError && (
                             <p className="text-red-600 mt-2">
-                                {(loginMutation.error as any)?.response?.data?.detail || "Login error"}
+                                {(loginMutation.error as never)?.response?.data?.detail || "Login error"}
                             </p>
                         )}
                     </div>

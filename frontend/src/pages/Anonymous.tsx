@@ -1,5 +1,5 @@
 import { Rocket} from "lucide-react";
-import {LoginForm} from "../components/LoginForm.tsx";
+import {LoginForm} from "../components/login-form.tsx";
 
 export function AnonymousPage() {
 

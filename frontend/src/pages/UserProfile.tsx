@@ -9,13 +9,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { User, Mail, Shield, CheckCircle, XCircle, Calendar, Settings } from "lucide-react";
+import {User, Mail, Shield, CheckCircle, XCircle, Calendar, Settings, Lock} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+    Dialog,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import {UserUpdatePopin} from "@/components/user-update-popin.tsx";
+import {UserUpdatePassword} from "@/components/user-update-password.tsx";
 
 export default function UserProfile() {
     const { data, error, isLoading } = useQuery({
         queryKey: ["currentUser"],
-        // @ts-ignore
         queryFn: (): Promise<UserRead> => usersCurrentUserUsersMeGet().then(res => res.data),
     })
 
@@ -100,7 +105,7 @@ export default function UserProfile() {
 
     // Génération des initiales pour l'avatar
     const getInitials = (email: string) => {
-        return email.split('@')[0].substring(0, 2).toUpperCase();
+        return email.substring(0, 2).toUpperCase();
     }
 
     return (
@@ -123,7 +128,7 @@ export default function UserProfile() {
                                 <div className="flex items-center space-x-6">
                                     <Avatar className="h-20 w-20 border-4 border-white shadow-lg">
                                         <AvatarFallback className="text-xl font-semibold bg-gradient-to-br from-blue-500 to-purple-600 text-white">
-                                            {getInitials(data.email)}
+                                            {getInitials(data.name||"Anonymous")}
                                         </AvatarFallback>
                                     </Avatar>
                                     <div className="space-y-2">
@@ -155,10 +160,15 @@ export default function UserProfile() {
                                         </p>
                                     </div>
                                 </div>
-                                <Button variant="outline" className="flex items-center space-x-2">
-                                    <Settings className="h-4 w-4" />
-                                    <span>Modifier le profil</span>
-                                </Button>
+                                <Dialog>
+                                    <DialogTrigger>
+                                        <Button variant="outline" className="flex items-center space-x-2">
+                                            <Settings className="h-4 w-4" />
+                                            <span>Modifier le profil</span>
+                                        </Button>
+                                    </DialogTrigger>
+                                    <UserUpdatePopin user={data} />
+                                </Dialog>
                             </div>
 
                             <Separator />
@@ -182,6 +192,10 @@ export default function UserProfile() {
                                     <div className="flex justify-between items-center">
                                         <span className="text-sm font-medium text-gray-500">Adresse email</span>
                                         <span className="text-sm">{data.email}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-sm font-medium text-gray-500">Pseudo</span>
+                                        <span className="text-sm">{data.name}</span>
                                     </div>
                                 </CardContent>
                             </Card>
@@ -260,9 +274,15 @@ export default function UserProfile() {
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="flex flex-wrap gap-3">
-                                <Button variant="outline" size="sm">
-                                    Changer le mot de passe
-                                </Button>
+                                <Dialog>
+                                    <DialogTrigger>
+                                        <Button variant="outline" size="sm">
+                                            <Lock />
+                                            Changer le mot de passe
+                                        </Button>
+                                    </DialogTrigger>
+                                    <UserUpdatePassword  />
+                                </Dialog>
                                 <Button variant="outline" size="sm">
                                     Préférences de notification
                                 </Button>

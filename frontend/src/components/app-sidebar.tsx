@@ -21,13 +21,11 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import {Link, Rocket} from "lucide-react";
+import {usersCurrentUserUsersMeGet} from "@/api/users/users.ts";
+import {useQuery} from "@tanstack/react-query";
+import type {UserRead} from "@/api/generated.schemas.ts";
 
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
+const data_navigation = {
   navMain: [
     {
       title: "Dashboard",
@@ -77,7 +75,16 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  return (
+    const {data: user, isLoading } = useQuery({
+        queryKey: ['currentUser'],
+        queryFn: (): Promise<UserRead> => usersCurrentUserUsersMeGet().then(res => res.data),
+    })
+
+    if (isLoading || !user) {
+        return <div>Chargement des données...</div>
+    }
+
+    return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
@@ -95,12 +102,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        {/*<NavDocuments items={data.documents} />*/}
-        {/*<NavSecondary items={data.navSecondary} className="mt-auto" />*/}
+        <NavMain items={data_navigation.navMain} />
+        {/*<NavDocuments items={data_navigation.documents} />*/}
+        {/*<NavSecondary items={data_navigation.navSecondary} className="mt-auto" />*/}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   )

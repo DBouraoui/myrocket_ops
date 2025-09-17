@@ -5,6 +5,7 @@
  * OpenAPI spec version: 0.1.0
  */
 export interface BearerResponse {
+  data: any;
   access_token: string;
   token_type: string;
 }
@@ -53,6 +54,8 @@ export interface HTTPValidationError {
   detail?: ValidationError[];
 }
 
+export type UserCreateName = string | null;
+
 export type UserCreateIsActive = boolean | null;
 
 export type UserCreateIsSuperuser = boolean | null;
@@ -62,20 +65,26 @@ export type UserCreateIsVerified = boolean | null;
 export interface UserCreate {
   email: string;
   password: string;
+  name?: UserCreateName;
   is_active?: UserCreateIsActive;
   is_superuser?: UserCreateIsSuperuser;
   is_verified?: UserCreateIsVerified;
 }
 
+export type UserReadName = string | null;
+
 export interface UserRead {
   id: string;
   email: string;
+  name?: UserReadName;
   is_active?: boolean;
   is_superuser?: boolean;
   is_verified?: boolean;
 }
 
 export type UserUpdatePassword = string | null;
+
+export type UserUpdateName = string | null;
 
 export type UserUpdateEmail = string | null;
 
@@ -87,6 +96,7 @@ export type UserUpdateIsVerified = boolean | null;
 
 export interface UserUpdate {
   password?: UserUpdatePassword;
+  name?: UserUpdateName;
   email?: UserUpdateEmail;
   is_active?: UserUpdateIsActive;
   is_superuser?: UserUpdateIsSuperuser;
