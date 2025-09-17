@@ -1,5 +1,4 @@
 import {
-  IconCreditCard,
   IconDotsVertical,
   IconLogout,
   IconNotification,
@@ -26,6 +25,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import {Link} from "react-router-dom";
+import {useNavigate} from "react-router"
+import {useAuthJwtLogoutAuthJwtLogoutPost} from "@/api/auth/auth.ts";
 
 export function NavUser({
   user,
@@ -37,6 +39,19 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+        const { mutateAsync } = useAuthJwtLogoutAuthJwtLogoutPost();
+        let navigate = useNavigate();
+
+        const handleLogout = async () => {
+            try {
+                await mutateAsync();
+                localStorage.removeItem("access_token");
+                navigate("/");
+            } catch (err) {
+                console.error("Erreur logout :", err);
+            }
+        };
+
 
   return (
     <SidebarMenu>
@@ -84,11 +99,7 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <IconUserCircle />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <IconCreditCard />
-                Billing
+                  <Link to="/user-settings">Profil</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <IconNotification />
@@ -98,7 +109,7 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <IconLogout />
-              Log out
+                <p onClick={handleLogout}>Déconnexion</p>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

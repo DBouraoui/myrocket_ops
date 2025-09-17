@@ -1,5 +1,8 @@
 # myrocket_ops
 
+send dev mode :
+    python main.py
+
 alembic:
     create migration : 
         alembic revision --autogenerate -m "motif"

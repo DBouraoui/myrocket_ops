@@ -1,6 +1,16 @@
 module.exports = {
-  'petstore-file': {
-    input: 'http://localhost:8000/openapi.json',
-    output: './src/api/generated.ts',
-  },
+    api: {
+        input: "http://localhost:8000/openapi.json", // OpenAPI schema FastAPI
+        output: {
+            mode: "tags-split",
+            target: "./src/api/generated.ts",
+            client: "react-query",
+            override: {
+                mutator: {
+                    path: "./src/lib/axios.ts",
+                    name: "apiClient",
+                },
+            },
+        },
+    },
 };
